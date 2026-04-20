@@ -3,6 +3,11 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global spin animation used by inline-styled components */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 /* ============================================================
    Velocity AI BarFlow — Design System
    Premium dark POS for high-pressure bar environments

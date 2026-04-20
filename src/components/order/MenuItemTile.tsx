@@ -13,42 +13,49 @@ export function MenuItemTile({ item, onTap, onCustomize }: Props) {
 
   return (
     <div
-      className={`menu-item w-full ${!item.isAvailable ? 'unavailable' : ''}`}
       onClick={() => item.isAvailable && onTap(item)}
+      className={`
+        relative flex flex-col rounded-2xl overflow-hidden select-none
+        bg-surface border border-border cursor-pointer
+        transition-all duration-100 active:scale-95
+        hover:border-accent/25 hover:bg-hover
+        ${!item.isAvailable ? 'opacity-40 pointer-events-none' : ''}
+      `}
+      style={{ minHeight: '110px' }}
     >
-      {/* Popular badge */}
+      {/* HOT badge */}
       {item.isPopular && (
-        <div className="absolute top-2 left-2 z-10">
-          <span className="text-[9px] font-black text-warning uppercase tracking-widest">HOT</span>
-        </div>
+        <span className="absolute top-2 left-2 z-10 text-[9px] font-black text-warning uppercase tracking-widest">
+          HOT
+        </span>
       )}
 
-      {/* Customize icon — absolutely positioned, stops propagation */}
+      {/* Customize button */}
       {hasModifiers && onCustomize && item.isAvailable && (
-        <div
+        <button
           onClick={(e) => { e.stopPropagation(); onCustomize(item); }}
-          className="absolute top-2 right-2 z-10 w-6 h-6 rounded-lg bg-surface border border-border
-                     flex items-center justify-center cursor-pointer hover:border-accent/40 transition-colors"
+          className="absolute top-1.5 right-1.5 z-10 w-6 h-6 rounded-lg bg-bg/80 border border-border
+                     flex items-center justify-center hover:border-accent/40 transition-colors"
         >
           <SlidersHorizontal size={10} className="text-tertiary" />
-        </div>
+        </button>
       )}
 
-      {/* Emoji + name (vertically centered) */}
-      <div className="flex flex-col items-center gap-1.5 flex-1 justify-center">
-        <span className="text-3xl leading-none select-none">{item.emoji}</span>
-        <span className="text-sm font-semibold text-primary text-center leading-tight line-clamp-2">
+      {/* Emoji + name — fills available space */}
+      <div className="flex-1 flex flex-col items-center justify-center gap-1 pt-4 pb-2 px-2">
+        <span className="text-3xl leading-none">{item.emoji}</span>
+        <span className="text-[11px] font-semibold text-white text-center leading-tight line-clamp-2 px-1">
           {item.name}
         </span>
       </div>
 
-      {/* Price + always-visible add button */}
-      <div className="flex items-center justify-between w-full mt-auto">
-        <span className="text-accent font-bold text-sm tabular-nums">
+      {/* Price bar — pinned to bottom */}
+      <div className="flex items-center justify-between px-2.5 py-2 bg-hover/60 border-t border-border/60">
+        <span className="text-[11px] font-bold text-accent tabular-nums">
           €{item.price.toFixed(2)}
         </span>
-        <div className="w-6 h-6 rounded-lg bg-accent/15 border border-accent/30 flex items-center justify-center">
-          <Plus size={12} className="text-accent" />
+        <div className="w-5 h-5 rounded-md bg-accent/15 border border-accent/30 flex items-center justify-center">
+          <Plus size={10} className="text-accent" />
         </div>
       </div>
     </div>

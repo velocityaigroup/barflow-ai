@@ -50,22 +50,22 @@ export default function FloorPage() {
       </header>
 
       {/* Stats row */}
-      <div className="flex items-stretch gap-2 px-4 py-3 shrink-0">
-        <div className="flex-1 bg-success/8 border border-success/20 rounded-xl px-3 py-2.5 flex flex-col items-center">
-          <span className="text-xl font-black text-success">{stats.free}</span>
-          <span className="text-[10px] font-semibold text-success/60 uppercase tracking-wide mt-0.5">Free</span>
+      <div className="grid grid-cols-4 gap-2 px-3 py-2.5 shrink-0">
+        <div className="bg-success/8 border border-success/20 rounded-xl px-2 py-2 flex flex-col items-center">
+          <span className="text-lg font-black text-success leading-none">{stats.free}</span>
+          <span className="text-[9px] font-semibold text-success/60 uppercase tracking-wide mt-0.5">Free</span>
         </div>
-        <div className="flex-1 bg-danger/8 border border-danger/20 rounded-xl px-3 py-2.5 flex flex-col items-center">
-          <span className="text-xl font-black text-danger">{stats.occupied}</span>
-          <span className="text-[10px] font-semibold text-danger/60 uppercase tracking-wide mt-0.5">Active</span>
+        <div className="bg-danger/8 border border-danger/20 rounded-xl px-2 py-2 flex flex-col items-center">
+          <span className="text-lg font-black text-danger leading-none">{stats.occupied}</span>
+          <span className="text-[9px] font-semibold text-danger/60 uppercase tracking-wide mt-0.5">Active</span>
         </div>
-        <div className="flex-1 bg-warning/8 border border-warning/20 rounded-xl px-3 py-2.5 flex flex-col items-center">
-          <span className="text-xl font-black text-warning">{stats.ordering}</span>
-          <span className="text-[10px] font-semibold text-warning/60 uppercase tracking-wide mt-0.5">Ordering</span>
+        <div className="bg-warning/8 border border-warning/20 rounded-xl px-2 py-2 flex flex-col items-center">
+          <span className="text-lg font-black text-warning leading-none">{stats.ordering}</span>
+          <span className="text-[9px] font-semibold text-warning/60 uppercase tracking-wide mt-0.5">Ordering</span>
         </div>
-        <div className="flex-[1.5] bg-accent/8 border border-accent/20 rounded-xl px-3 py-2.5 flex flex-col items-center">
-          <span className="text-xl font-black text-accent">€{totalRevenue.toFixed(0)}</span>
-          <span className="text-[10px] font-semibold text-accent/60 uppercase tracking-wide mt-0.5">Tonight</span>
+        <div className="bg-accent/8 border border-accent/20 rounded-xl px-2 py-2 flex flex-col items-center">
+          <span className="text-lg font-black text-accent leading-none">€{totalRevenue.toFixed(0)}</span>
+          <span className="text-[9px] font-semibold text-accent/60 uppercase tracking-wide mt-0.5">Tonight</span>
         </div>
       </div>
 

@@ -5,7 +5,7 @@ import { BottomNav } from '@/components/ui/BottomNav';
 import { StatusBar } from '@/components/ui/StatusBar';
 import { OrderCard } from '@/components/bar/OrderCard';
 import { Coffee, RefreshCw } from 'lucide-react';
-import { OrderStatus } from '@/data/tables';
+import { OrderStatus } from '@/store/useDemoStore';
 
 const COLUMNS: { status: OrderStatus; label: string; emoji: string }[] = [
   { status: 'new',         label: 'New Orders', emoji: '🔔' },

@@ -4,7 +4,7 @@ import { useDemoStore } from '@/store/useDemoStore';
 import { BottomNav } from '@/components/ui/BottomNav';
 import { StatusBar } from '@/components/ui/StatusBar';
 import { ChefHat, Clock } from 'lucide-react';
-import { OrderStatus } from '@/data/tables';
+import { OrderStatus } from '@/store/useDemoStore';
 
 export default function KitchenPage() {
   const { orders, updateOrderStatus } = useDemoStore();

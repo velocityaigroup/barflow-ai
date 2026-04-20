@@ -5,7 +5,7 @@ import { useDemoStore } from '@/store/useDemoStore';
 import { BottomNav } from '@/components/ui/BottomNav';
 import { StatusBar } from '@/components/ui/StatusBar';
 import { TableBlock } from '@/components/floor/TableBlock';
-import { TableStatus } from '@/data/tables';
+import { TableStatus } from '@/store/useDemoStore';
 import { LayoutGrid, Users, TrendingUp } from 'lucide-react';
 
 const SECTIONS = ['All', 'Indoor', 'Terrace', 'Beach'];

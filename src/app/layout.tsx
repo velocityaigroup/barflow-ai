@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Toast } from '@/components/ui/Toast';
+import { StoreInitializer } from '@/components/StoreInitializer';
 
 export const metadata: Metadata = {
   title: 'Velocity AI BarFlow',
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
       <body>
+        <StoreInitializer />
         {children}
         <Toast />
       </body>

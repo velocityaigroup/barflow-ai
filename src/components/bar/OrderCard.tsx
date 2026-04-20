@@ -1,5 +1,5 @@
 'use client';
-import { OrderData, OrderStatus } from '@/data/tables';
+import { OrderData, OrderStatus } from '@/store/useDemoStore';
 import { useDemoStore } from '@/store/useDemoStore';
 import { Clock, ChevronRight } from 'lucide-react';
 

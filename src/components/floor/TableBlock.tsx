@@ -1,5 +1,5 @@
 'use client';
-import { TableData } from '@/data/tables';
+import { TableData } from '@/store/useDemoStore';
 import { Users } from 'lucide-react';
 
 interface Props {

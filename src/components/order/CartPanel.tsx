@@ -9,15 +9,15 @@ interface Props {
 }
 
 export function CartPanel({ tableId, tableNumber }: Props) {
-  const { cart, updateQty, removeFromCart, clearCart, submitOrder } = useDemoStore();
+  const { cart, updateQty, removeFromCart, clearCart, submitOrder, submitting } = useDemoStore();
   const router = useRouter();
 
   const total = cart.reduce((sum, i) => sum + i.totalPrice, 0);
   const itemCount = cart.reduce((sum, i) => sum + i.quantity, 0);
 
-  const handleSend = () => {
-    if (cart.length === 0) return;
-    submitOrder(tableId);
+  const handleSend = async () => {
+    if (cart.length === 0 || submitting) return;
+    await submitOrder(tableId);
     router.push('/bar');
   };
 
@@ -121,11 +121,20 @@ export function CartPanel({ tableId, tableNumber }: Props) {
 
         <button
           onClick={handleSend}
-          disabled={cart.length === 0}
+          disabled={cart.length === 0 || submitting}
           className="btn-primary w-full btn-lg font-black text-md gap-2"
         >
-          <Send size={18} />
-          Send to Bar
+          {submitting ? (
+            <>
+              <div className="w-4 h-4 border-2 border-bg/30 border-t-bg rounded-full animate-spin" />
+              Sending...
+            </>
+          ) : (
+            <>
+              <Send size={18} />
+              Send to Bar
+            </>
+          )}
         </button>
 
         {cart.length > 0 && (

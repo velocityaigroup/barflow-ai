@@ -56,7 +56,7 @@ export function OrderCard({ order }: { order: OrderData }) {
   return (
     <div className={`${CARD_CLASS[order.status]} animate-scale-in`}>
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2.5">
           <div className="w-9 h-9 rounded-xl bg-bg flex items-center justify-center font-black text-lg text-primary">
             {order.tableNumber}
@@ -76,7 +76,7 @@ export function OrderCard({ order }: { order: OrderData }) {
       </div>
 
       {/* Timer */}
-      <div className={`flex items-center gap-1.5 mb-3 text-xs font-mono ${
+      <div className={`flex items-center gap-1.5 mb-2 text-xs font-mono ${
         isUrgent ? 'text-danger font-bold' : 'text-tertiary'
       }`}>
         <Clock size={11} />
@@ -85,7 +85,7 @@ export function OrderCard({ order }: { order: OrderData }) {
       </div>
 
       {/* Items */}
-      <div className="space-y-2 mb-4 min-h-[40px]">
+      <div className="space-y-1.5 mb-3 min-h-[32px]">
         {order.items.map((item, i) => (
           <div key={i} className="flex items-start gap-2">
             <span className="text-xl font-black text-accent leading-tight w-6 text-center shrink-0">
@@ -107,7 +107,7 @@ export function OrderCard({ order }: { order: OrderData }) {
       </div>
 
       {/* Total */}
-      <div className="flex items-center justify-between mb-3 pt-2 border-t border-border">
+      <div className="flex items-center justify-between mb-2 pt-1.5 border-t border-border">
         <span className="text-tertiary text-xs">Total</span>
         <span className="text-primary font-bold text-sm tabular-nums">
           €{order.total.toFixed(2)}

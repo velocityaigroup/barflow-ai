@@ -23,7 +23,7 @@ export function CartPanel({ tableId, tableNumber }: Props) {
   return (
     <div
       style={{
-        width: '300px',
+        width: '272px',
         flexShrink: 0,
         display: 'flex',
         flexDirection: 'column',
@@ -34,7 +34,7 @@ export function CartPanel({ tableId, tableNumber }: Props) {
     >
       {/* Header */}
       <div style={{
-        padding: '16px',
+        padding: '10px 12px',
         borderBottom: '1px solid #1E2A3A',
         flexShrink: 0,
         display: 'flex',
@@ -70,7 +70,7 @@ export function CartPanel({ tableId, tableNumber }: Props) {
       </div>
 
       {/* Cart items — scrollable */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '8px' }}>
+      <div style={{ flex: 1, overflowY: 'auto', padding: '6px' }}>
         {cart.length === 0 ? (
           <div style={{
             display: 'flex',
@@ -96,8 +96,8 @@ export function CartPanel({ tableId, tableNumber }: Props) {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '10px',
-                  padding: '10px 8px',
-                  borderRadius: '10px',
+                  padding: '7px 6px',
+                  borderRadius: '8px',
                   borderBottom: '1px solid rgba(30,42,58,0.6)',
                 }}
               >
@@ -182,12 +182,12 @@ export function CartPanel({ tableId, tableNumber }: Props) {
 
       {/* Footer — total + send button */}
       <div style={{
-        padding: '14px 16px',
+        padding: '10px 12px',
         borderTop: '1px solid #1E2A3A',
         flexShrink: 0,
         display: 'flex',
         flexDirection: 'column',
-        gap: '12px',
+        gap: '8px',
         backgroundColor: 'rgba(11,15,20,0.5)',
       }}>
         {cart.length > 0 && (
@@ -197,7 +197,7 @@ export function CartPanel({ tableId, tableNumber }: Props) {
             justifyContent: 'space-between',
           }}>
             <span style={{ fontSize: '14px', color: '#8B9BB4' }}>Total</span>
-            <span style={{ fontSize: '24px', fontWeight: 900, color: '#FFFFFF', fontVariantNumeric: 'tabular-nums' }}>
+            <span style={{ fontSize: '20px', fontWeight: 900, color: '#FFFFFF', fontVariantNumeric: 'tabular-nums' }}>
               €{total.toFixed(2)}
             </span>
           </div>
@@ -208,8 +208,8 @@ export function CartPanel({ tableId, tableNumber }: Props) {
           disabled={cart.length === 0 || submitting}
           style={{
             width: '100%',
-            minHeight: '56px',
-            borderRadius: '14px',
+            minHeight: '48px',
+            borderRadius: '12px',
             border: 'none',
             background: cart.length === 0
               ? '#1A2230'

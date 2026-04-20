@@ -28,7 +28,7 @@ export function MenuGrid({ items, onTap, onCustomize, categoryName, categoryEmoj
           display: 'flex',
           alignItems: 'center',
           gap: '10px',
-          padding: '14px 16px 10px',
+          padding: '10px 12px 8px',
           borderBottom: '1px solid #1E2A3A',
           flexShrink: 0,
         }}>
@@ -46,7 +46,7 @@ export function MenuGrid({ items, onTap, onCustomize, categoryName, categoryEmoj
           flex: 1,
           overflowY: 'auto',
           overflowX: 'hidden',
-          padding: '12px',
+          padding: '8px',
         }}
       >
         {items.length === 0 ? (
@@ -66,8 +66,8 @@ export function MenuGrid({ items, onTap, onCustomize, categoryName, categoryEmoj
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
-              gap: '10px',
+              gridTemplateColumns: 'repeat(auto-fill, minmax(115px, 1fr))',
+              gap: '8px',
               alignContent: 'start',
             }}
           >

@@ -11,7 +11,7 @@ export function CategorySidebar({ categories, activeId, onSelect }: Props) {
   return (
     <div
       style={{
-        width: '200px',
+        width: '176px',
         flexShrink: 0,
         display: 'flex',
         flexDirection: 'column',
@@ -21,7 +21,7 @@ export function CategorySidebar({ categories, activeId, onSelect }: Props) {
         backgroundColor: '#0B0F14',
       }}
     >
-      <div style={{ padding: '12px 8px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+      <div style={{ padding: '8px 6px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
         {categories.map((cat) => {
           const active = cat.id === activeId;
           return (
@@ -31,19 +31,19 @@ export function CategorySidebar({ categories, activeId, onSelect }: Props) {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '10px',
-                padding: '14px 12px',
-                borderRadius: '12px',
+                gap: '8px',
+                padding: '10px 10px',
+                borderRadius: '10px',
                 border: active ? '1px solid rgba(0,212,255,0.35)' : '1px solid transparent',
                 backgroundColor: active ? 'rgba(0,212,255,0.1)' : 'transparent',
                 color: active ? '#00D4FF' : '#8B9BB4',
                 fontWeight: active ? 700 : 500,
-                fontSize: '14px',
+                fontSize: '13px',
                 cursor: 'pointer',
                 transition: 'all 0.12s ease',
                 textAlign: 'left',
                 width: '100%',
-                minHeight: '52px',
+                minHeight: '44px',
               }}
               onMouseEnter={(e) => {
                 if (!active) {
@@ -58,7 +58,7 @@ export function CategorySidebar({ categories, activeId, onSelect }: Props) {
                 }
               }}
             >
-              <span style={{ fontSize: '22px', lineHeight: 1, flexShrink: 0 }}>{cat.emoji}</span>
+              <span style={{ fontSize: '18px', lineHeight: 1, flexShrink: 0 }}>{cat.emoji}</span>
               <span style={{ lineHeight: 1.2 }}>{cat.name}</span>
             </button>
           );

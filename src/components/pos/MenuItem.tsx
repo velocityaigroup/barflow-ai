@@ -18,11 +18,11 @@ export function MenuItem({ item, onTap, onCustomize }: Props) {
         flexDirection: 'column',
         backgroundColor: '#121821',
         border: '1px solid #1E2A3A',
-        borderRadius: '14px',
+        borderRadius: '12px',
         overflow: 'hidden',
         cursor: item.isAvailable ? 'pointer' : 'default',
         opacity: item.isAvailable ? 1 : 0.4,
-        minHeight: '130px',
+        minHeight: '108px',
         transition: 'border-color 0.1s ease, background-color 0.1s ease, transform 0.1s ease',
         userSelect: 'none',
       }}
@@ -100,21 +100,21 @@ export function MenuItem({ item, onTap, onCustomize }: Props) {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '16px 8px 8px',
-        gap: '6px',
+        padding: '10px 6px 6px',
+        gap: '4px',
       }}>
-        <span style={{ fontSize: '32px', lineHeight: 1 }}>{item.emoji}</span>
+        <span style={{ fontSize: '26px', lineHeight: 1 }}>{item.emoji}</span>
         <span style={{
-          fontSize: '12px',
+          fontSize: '11px',
           fontWeight: 600,
           color: '#FFFFFF',
           textAlign: 'center',
-          lineHeight: 1.3,
+          lineHeight: 1.25,
           display: '-webkit-box',
           WebkitLineClamp: 2,
           WebkitBoxOrient: 'vertical',
           overflow: 'hidden',
-          padding: '0 4px',
+          padding: '0 2px',
         }}>
           {item.name}
         </span>
@@ -125,7 +125,7 @@ export function MenuItem({ item, onTap, onCustomize }: Props) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        padding: '8px 10px',
+        padding: '6px 8px',
         borderTop: '1px solid rgba(30,42,58,0.8)',
         backgroundColor: 'rgba(26,34,48,0.5)',
       }}>

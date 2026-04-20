@@ -1,0 +1,17 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": ".next",
+  "rewrites": [
+    { "source": "/qr/:businessId", "destination": "/qr/:businessId" }
+  ],
+  "headers": [
+    {
+      "source": "/qr/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
+  ]
+}

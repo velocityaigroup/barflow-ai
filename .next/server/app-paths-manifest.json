@@ -1,0 +1,12 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/floor/page": "app/floor/page.js",
+  "/bar/page": "app/bar/page.js",
+  "/auth/page": "app/auth/page.js",
+  "/kitchen/page": "app/kitchen/page.js",
+  "/manager/page": "app/manager/page.js",
+  "/order/[id]/page": "app/order/[id]/page.js",
+  "/qr/[businessId]/page": "app/qr/[businessId]/page.js",
+  "/order/page": "app/order/page.js",
+  "/page": "app/page.js"
+}

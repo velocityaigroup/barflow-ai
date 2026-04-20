@@ -9,10 +9,13 @@ interface Props {
 }
 
 export function MenuItemTile({ item, onTap, onCustomize }: Props) {
-  const hasModifiers = item.modifierGroups && item.modifierGroups.length > 0;
+  const hasModifiers = !!(item.modifierGroups && item.modifierGroups.length > 0);
 
   return (
-    <div className={`menu-item relative flex flex-col ${!item.isAvailable ? 'opacity-50 pointer-events-none' : ''}`}>
+    <div
+      className={`menu-item w-full ${!item.isAvailable ? 'unavailable' : ''}`}
+      onClick={() => item.isAvailable && onTap(item)}
+    >
       {/* Popular badge */}
       {item.isPopular && (
         <div className="absolute top-2 left-2 z-10">
@@ -20,45 +23,34 @@ export function MenuItemTile({ item, onTap, onCustomize }: Props) {
         </div>
       )}
 
-      {/* Customize button — only if item has modifier groups */}
+      {/* Customize icon — absolutely positioned, stops propagation */}
       {hasModifiers && onCustomize && item.isAvailable && (
-        <button
+        <div
           onClick={(e) => { e.stopPropagation(); onCustomize(item); }}
-          className="absolute top-2 right-2 z-10 w-6 h-6 rounded-lg bg-surface/80 border border-border
-                     flex items-center justify-center hover:border-accent/40 active:scale-90 transition-all"
-          title="Customize"
+          className="absolute top-2 right-2 z-10 w-6 h-6 rounded-lg bg-surface border border-border
+                     flex items-center justify-center cursor-pointer hover:border-accent/40 transition-colors"
         >
           <SlidersHorizontal size={10} className="text-tertiary" />
-        </button>
+        </div>
       )}
 
-      {/* Main tap target — instant add to cart */}
-      <button
-        onClick={() => onTap(item)}
-        className="flex flex-col items-center gap-1.5 flex-1 justify-center pt-3 pb-2 px-2 w-full text-center
-                   active:bg-accent/5 transition-colors"
-        disabled={!item.isAvailable}
-      >
+      {/* Emoji + name (vertically centered) */}
+      <div className="flex flex-col items-center gap-1.5 flex-1 justify-center">
         <span className="text-3xl leading-none select-none">{item.emoji}</span>
-        <span className="text-sm font-semibold text-primary text-center leading-tight line-clamp-2 px-1">
+        <span className="text-sm font-semibold text-primary text-center leading-tight line-clamp-2">
           {item.name}
         </span>
-      </button>
+      </div>
 
-      {/* Price + add — always visible, tappable */}
-      <button
-        onClick={() => onTap(item)}
-        disabled={!item.isAvailable}
-        className="flex items-center justify-between w-full px-3 py-2 border-t border-border/50
-                   hover:bg-accent/5 active:bg-accent/10 transition-colors rounded-b-xl"
-      >
+      {/* Price + always-visible add button */}
+      <div className="flex items-center justify-between w-full mt-auto">
         <span className="text-accent font-bold text-sm tabular-nums">
           €{item.price.toFixed(2)}
         </span>
         <div className="w-6 h-6 rounded-lg bg-accent/15 border border-accent/30 flex items-center justify-center">
           <Plus size={12} className="text-accent" />
         </div>
-      </button>
+      </div>
     </div>
   );
 }

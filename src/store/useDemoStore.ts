@@ -252,47 +252,53 @@ export const useDemoStore = create<DemoStore>((set, get) => ({
     if (cart.length === 0) return;
     set({ submitting: true });
 
-    const table     = tables.find(t => t.id === tableId);
-    const barItems  = cart.filter(c => c.menuItem.categoryId !== 'food');
-    const foodItems = cart.filter(c => c.menuItem.categoryId === 'food');
-    const total     = cart.reduce((s, c) => s + c.totalPrice, 0);
-    const isWalkin  = tableId === 'walkin';
-    const now       = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    try {
+      const table     = tables.find(t => t.id === tableId);
+      const barItems  = cart.filter(c => c.menuItem.categoryId !== 'food');
+      const foodItems = cart.filter(c => c.menuItem.categoryId === 'food');
+      const total     = cart.reduce((s, c) => s + c.totalPrice, 0);
+      const isWalkin  = tableId === 'walkin';
+      const now       = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
 
-    const buildOrder = (items: CartItem[], destination: 'bar' | 'kitchen') => ({
-      table_id:     isWalkin ? null : tableId,
-      table_number: table?.number || 0,
-      destination,
-      status:       'new',
-      total:        items.reduce((s, c) => s + c.totalPrice, 0),
-      staff_name:   staff?.name || 'Staff',
-      items: items.map(c => ({
-        name:      c.menuItem.name,
-        qty:       c.quantity,
-        price:     c.menuItem.price,
-        modifiers: c.selectedModifiers.map(m => m.name),
-        note:      c.customNote || undefined,
-      })),
-    });
+      const buildOrder = (items: CartItem[], destination: 'bar' | 'kitchen') => ({
+        table_id:     isWalkin ? null : tableId,
+        table_number: table?.number || 0,
+        destination,
+        status:       'new',
+        total:        items.reduce((s, c) => s + c.totalPrice, 0),
+        staff_name:   staff?.name || 'Staff',
+        items: items.map(c => ({
+          name:      c.menuItem.name,
+          qty:       c.quantity,
+          price:     c.menuItem.price,
+          modifiers: c.selectedModifiers.map(m => m.name),
+          note:      c.customNote || undefined,
+        })),
+      });
 
-    // Write orders to Supabase
-    if (barItems.length  > 0) await supabase.from('orders').insert(buildOrder(barItems,  'bar'));
-    if (foodItems.length > 0) await supabase.from('orders').insert(buildOrder(foodItems, 'kitchen'));
+      // Write orders to Supabase
+      if (barItems.length  > 0) await supabase.from('orders').insert(buildOrder(barItems,  'bar'));
+      if (foodItems.length > 0) await supabase.from('orders').insert(buildOrder(foodItems, 'kitchen'));
 
-    // Update table status
-    if (!isWalkin && tableId) {
-      await supabase.from('floor_tables').update({
-        status:        'occupied',
-        opened_at:     table?.openedAt || now,
-        current_total: (table?.currentTotal || 0) + total,
-      }).eq('id', tableId);
+      // Update table status
+      if (!isWalkin && tableId) {
+        await supabase.from('floor_tables').update({
+          status:        'occupied',
+          opened_at:     table?.openedAt || now,
+          current_total: (table?.currentTotal || 0) + total,
+        }).eq('id', tableId);
+      }
+
+      set({ cart: [], submitting: false });
+      get().showNotification(
+        `Order sent! ${barItems.length > 0 ? '🍹 Bar' : ''}${barItems.length > 0 && foodItems.length > 0 ? ' + ' : ''}${foodItems.length > 0 ? '🍽️ Kitchen' : ''}`,
+        'success',
+      );
+    } catch (err) {
+      console.error('submitOrder failed:', err);
+      set({ submitting: false });
+      get().showNotification('Failed to send order — please retry', 'error');
     }
-    set({ cart: [], submitting: false });
-
-    get().showNotification(
-      `Order sent! ${barItems.length > 0 ? '🍹 Bar' : ''}${barItems.length > 0 && foodItems.length > 0 ? ' + ' : ''}${foodItems.length > 0 ? '🍽️ Kitchen' : ''}`,
-      'success',
-    );
   },
 
   // ── Update order status (optimistic + Supabase) ───────────

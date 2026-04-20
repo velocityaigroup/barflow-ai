@@ -33,14 +33,13 @@ export default function OrderPage() {
     return getItemsByCategory(activeCat);
   }, [activeCat, search]);
 
+  // Tap = instant add (no blocking popup). Customize button = opens modifier panel.
   const handleItemTap = (item: MenuItem) => {
-    // If item has modifier groups → open modifier panel (tap 2)
-    // If no modifiers → add directly (instant, tap 2 = done)
-    if (item.modifierGroups && item.modifierGroups.length > 0) {
-      openModifierPanel(item);
-    } else {
-      addToCart(item, [], '');
-    }
+    addToCart(item, [], '');
+  };
+
+  const handleCustomize = (item: MenuItem) => {
+    openModifierPanel(item);
   };
 
   return (
@@ -130,7 +129,12 @@ export default function OrderPage() {
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {items.map((item) => (
-                <MenuItemTile key={item.id} item={item} onTap={handleItemTap} />
+                <MenuItemTile
+                  key={item.id}
+                  item={item}
+                  onTap={handleItemTap}
+                  onCustomize={handleCustomize}
+                />
               ))}
             </div>
           )}
@@ -140,7 +144,7 @@ export default function OrderPage() {
         <CartPanel tableId={id} tableNumber={table?.number} />
       </div>
 
-      {/* Modifier slide-up panel */}
+      {/* Modifier slide-up panel (opt-in via customize button) */}
       <ModifierPanel />
 
       <BottomNav />

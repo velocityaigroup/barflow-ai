@@ -1,19 +1,26 @@
 'use client';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDemoStore } from '@/store/useDemoStore';
 import { BottomNav } from '@/components/ui/BottomNav';
 import { StatusBar } from '@/components/ui/StatusBar';
 import { TableBlock } from '@/components/floor/TableBlock';
 import { TableStatus } from '@/store/useDemoStore';
-import { LayoutGrid, Users, TrendingUp } from 'lucide-react';
-
-const SECTIONS = ['All', 'Indoor', 'Terrace', 'Beach'];
+import { useVenueConfig } from '@/hooks/useVenueConfig';
+import { LayoutGrid } from 'lucide-react';
 
 export default function FloorPage() {
   const router = useRouter();
   const { tables, setActiveTable } = useDemoStore();
+  const { venueName } = useVenueConfig();
   const [section, setSection] = useState('All');
+
+  // Derive sections dynamically from live table data — works for any venue
+  // without code changes. 'All' is always first.
+  const sections = useMemo(() => {
+    const unique = [...new Set(tables.map((t) => t.section))].sort();
+    return ['All', ...unique];
+  }, [tables]);
 
   const filtered = tables.filter(
     (t) => section === 'All' || t.section === section,
@@ -43,7 +50,7 @@ export default function FloorPage() {
           </div>
           <div>
             <h1 className="heading-md leading-none">Floor Plan</h1>
-            <p className="text-tertiary text-xs mt-0.5">Velocity Beach Club</p>
+            <p className="text-tertiary text-xs mt-0.5">{venueName}</p>
           </div>
         </div>
         <StatusBar />
@@ -69,9 +76,9 @@ export default function FloorPage() {
         </div>
       </div>
 
-      {/* Section filter */}
+      {/* Section filter — derived from live table data */}
       <div className="flex items-center gap-2 px-4 pb-3 overflow-x-auto no-scrollbar shrink-0">
-        {SECTIONS.map((s) => (
+        {sections.map((s) => (
           <button
             key={s}
             onClick={() => setSection(s)}

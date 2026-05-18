@@ -29,16 +29,26 @@ export function useWebSocket() {
       console.log('[WS] Connected');
       setWsConnected(true);
 
-      // Join business room with role
-      socket.emit('join:business', {
-        businessId: user.businessId,
-        role: user.role,
-      });
+      // Server reads businessId + role from the JWT (handshake.auth.token).
+      // The payload here is intentionally empty — anything we send would be ignored.
+      socket.emit('join:business');
     });
 
     socket.on('disconnect', () => {
       console.log('[WS] Disconnected');
       setWsConnected(false);
+    });
+
+    // Server rejected the JWT (missing / expired / bad signature).
+    socket.on('auth:error', (err: { message: string }) => {
+      console.error('[WS] Auth rejected:', err?.message);
+      setWsConnected(false);
+      // Token is bad — there's no point reconnecting until the user logs in again.
+      socket.disconnect();
+    });
+
+    socket.on('connect_error', (err: Error) => {
+      console.warn('[WS] Connect error:', err.message);
     });
 
     // ─── Order events ──────────────────────────────────────

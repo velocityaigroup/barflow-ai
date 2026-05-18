@@ -352,3 +352,31 @@ html, body { overscroll-behavior: none; -webkit-overflow-scrolling: touch; }
 
 /* Full-height helper using dynamic viewport */
 .h-screen-safe { height: 100dvh; }
+
+/* ── Premium gradient utilities ──────────────────────────── */
+.bg-gradient-accent  { background: linear-gradient(135deg, #00D4FF, #0099CC); }
+.bg-gradient-success { background: linear-gradient(135deg, #22C55E, #16A34A); }
+.bg-gradient-warning { background: linear-gradient(135deg, #F59E0B, #D97706); }
+.bg-gradient-surface { background: linear-gradient(180deg, #121821, #0F1520); }
+
+/* Glow shadows — composable with existing Tailwind box-shadow */
+.glow-accent  { box-shadow: 0 0 20px rgba(0, 212, 255, 0.30); }
+.glow-success { box-shadow: 0 0 20px rgba(34, 197, 94,  0.30); }
+.glow-danger  { box-shadow: 0 0 20px rgba(239, 68, 68,  0.30); }
+.glow-warning { box-shadow: 0 0 20px rgba(245, 158, 11, 0.30); }
+
+/* Inset top highlight — glass-panel inner edge */
+.inner-top { box-shadow: inset 0 1px 0 rgba(255,255,255,0.06); }
+
+/* Animated gradient border for "hot" elements */
+.border-glow-accent {
+  border-color: rgba(0, 212, 255, 0.4);
+  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.15);
+}
+
+/* Tabular mono numbers helper (already on Tailwind but nice shorthand) */
+.nums { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
+
+/* Touch-action: none on interactive gesture areas */
+.touch-none { touch-action: none; }
+.touch-pan-y { touch-action: pan-y; }

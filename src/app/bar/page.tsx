@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { useDemoStore } from '@/store/useDemoStore';
 import { BottomNav } from '@/components/ui/BottomNav';
 import { StatusBar } from '@/components/ui/StatusBar';
+import { OfflineBanner } from '@/components/ui/OfflineBanner';
 import { OrderCard } from '@/components/bar/OrderCard';
 import { Coffee } from 'lucide-react';
 import { OrderStatus } from '@/store/useDemoStore';
@@ -49,6 +50,8 @@ export default function BarPage() {
         </div>
         <StatusBar />
       </header>
+
+      <OfflineBanner />
 
       {/* ── MOBILE / TABLET: Tabbed layout (< lg) ─────────────── */}
       <div className="flex flex-col flex-1 overflow-hidden lg:hidden">

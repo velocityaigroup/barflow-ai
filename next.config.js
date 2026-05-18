@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Required for Docker / ECS deployment — emits a self-contained server bundle
+  output: 'standalone',
+
   // PWA-like headers for tablet kiosk mode
   async headers() {
     return [

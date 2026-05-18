@@ -1,66 +1,38 @@
 'use client';
+import { memo } from 'react';
 import { MenuItem as MenuItemType } from '@/data/menu';
 
 interface Props {
-  item: MenuItemType;
-  onTap: (item: MenuItemType) => void;
-  onCustomize: (item: MenuItemType) => void;
+  item:         MenuItemType;
+  onTap:        (item: MenuItemType) => void;
+  onCustomize:  (item: MenuItemType) => void;
+  /** Quantity already in the active cart — drives the in-tile badge. */
+  cartQty?:     number;
 }
 
-export function MenuItem({ item, onTap, onCustomize }: Props) {
+/**
+ * MenuItem tile — memoized so cart updates don't re-render the entire grid.
+ *
+ * Hover/active states driven by the `.menu-item` CSS class in globals.css.
+ * No JS DOM mutation.
+ */
+export const MenuItem = memo(function MenuItem({ item, onTap, onCustomize, cartQty = 0 }: Props) {
   const hasModifiers = !!(item.modifierGroups && item.modifierGroups.length > 0);
 
   return (
     <div
-      style={{
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: '#121821',
-        border: '1px solid #1E2A3A',
-        borderRadius: '12px',
-        overflow: 'hidden',
-        cursor: item.isAvailable ? 'pointer' : 'default',
-        opacity: item.isAvailable ? 1 : 0.4,
-        minHeight: '108px',
-        transition: 'border-color 0.1s ease, background-color 0.1s ease, transform 0.1s ease',
-        userSelect: 'none',
-      }}
+      className={`menu-item${item.isAvailable ? '' : ' unavailable'}`}
       onClick={() => item.isAvailable && onTap(item)}
-      onMouseEnter={(e) => {
-        if (item.isAvailable) {
-          const el = e.currentTarget as HTMLDivElement;
-          el.style.borderColor = 'rgba(0,212,255,0.3)';
-          el.style.backgroundColor = '#1A2230';
-        }
-      }}
-      onMouseLeave={(e) => {
-        const el = e.currentTarget as HTMLDivElement;
-        el.style.borderColor = '#1E2A3A';
-        el.style.backgroundColor = '#121821';
-      }}
-      onMouseDown={(e) => {
-        if (item.isAvailable) {
-          (e.currentTarget as HTMLDivElement).style.transform = 'scale(0.95)';
-        }
-      }}
-      onMouseUp={(e) => {
-        (e.currentTarget as HTMLDivElement).style.transform = 'scale(1)';
-      }}
+      role="button"
+      tabIndex={item.isAvailable ? 0 : -1}
+      onKeyDown={(e) => e.key === 'Enter' && item.isAvailable && onTap(item)}
     >
       {/* HOT badge */}
       {item.isPopular && (
-        <div style={{
-          position: 'absolute',
-          top: '6px',
-          left: '8px',
-          fontSize: '9px',
-          fontWeight: 900,
-          color: '#F59E0B',
-          letterSpacing: '0.08em',
-          textTransform: 'uppercase',
-          zIndex: 2,
-        }}>
+        <div
+          className="absolute top-1.5 left-2 text-warning font-black tracking-widest uppercase z-10"
+          style={{ fontSize: '9px' }}
+        >
           HOT
         </div>
       )}
@@ -69,91 +41,63 @@ export function MenuItem({ item, onTap, onCustomize }: Props) {
       {hasModifiers && item.isAvailable && (
         <button
           onClick={(e) => { e.stopPropagation(); onCustomize(item); }}
-          style={{
-            position: 'absolute',
-            top: '6px',
-            right: '6px',
-            width: '26px',
-            height: '26px',
-            borderRadius: '8px',
-            border: '1px solid #1E2A3A',
-            backgroundColor: 'rgba(11,15,20,0.8)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            zIndex: 2,
-            color: '#4A5B72',
-            fontSize: '11px',
-            transition: 'border-color 0.1s, color 0.1s',
-          }}
+          className="absolute top-1.5 right-1.5 w-6 h-6 rounded-lg border border-border
+                     bg-bg/80 flex items-center justify-center text-tertiary
+                     hover:border-accent/40 hover:text-accent transition-all duration-100 z-10"
+          style={{ fontSize: '11px' }}
           title="Customize"
         >
           ⚙
         </button>
       )}
 
-      {/* Emoji + Name — center content */}
-      <div style={{
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '10px 6px 6px',
-        gap: '4px',
-      }}>
+      {/* Emoji + Name */}
+      <div className="flex-1 flex flex-col items-center justify-center gap-1 px-1.5 pt-2.5 pb-1.5">
         <span style={{ fontSize: '26px', lineHeight: 1 }}>{item.emoji}</span>
-        <span style={{
-          fontSize: '11px',
-          fontWeight: 600,
-          color: '#FFFFFF',
-          textAlign: 'center',
-          lineHeight: 1.25,
-          display: '-webkit-box',
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
-          padding: '0 2px',
-        }}>
+        <span
+          className="text-primary font-semibold text-center leading-tight"
+          style={{
+            fontSize: '11px',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
+        >
           {item.name}
         </span>
       </div>
 
       {/* Price bar */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '6px 8px',
-        borderTop: '1px solid rgba(30,42,58,0.8)',
-        backgroundColor: 'rgba(26,34,48,0.5)',
-      }}>
-        <span style={{
-          fontSize: '13px',
-          fontWeight: 700,
-          color: '#00D4FF',
-          fontVariantNumeric: 'tabular-nums',
-        }}>
+      <div
+        className="flex items-center justify-between px-2 py-1.5 border-t border-border/80"
+        style={{ backgroundColor: 'rgba(26,34,48,0.5)' }}
+      >
+        <span className="text-accent font-bold tabular-nums" style={{ fontSize: '13px' }}>
           €{item.price.toFixed(2)}
         </span>
-        <div style={{
-          width: '22px',
-          height: '22px',
-          borderRadius: '6px',
-          backgroundColor: 'rgba(0,212,255,0.15)',
-          border: '1px solid rgba(0,212,255,0.3)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#00D4FF',
-          fontSize: '14px',
-          fontWeight: 700,
-          lineHeight: 1,
-        }}>
-          +
-        </div>
+        {cartQty > 0 ? (
+          <div
+            className="flex items-center justify-center rounded-md font-black text-bg"
+            style={{
+              fontSize: '10px', lineHeight: 1,
+              minWidth: '20px', height: '20px', padding: '0 4px',
+              background: 'linear-gradient(135deg, #00D4FF, #0099CC)',
+              boxShadow: '0 0 8px rgba(0,212,255,0.45)',
+            }}
+          >
+            ×{cartQty}
+          </div>
+        ) : (
+          <div
+            className="w-5 h-5 rounded-md flex items-center justify-center font-bold
+                       bg-accent/15 border border-accent/30 text-accent"
+            style={{ fontSize: '14px', lineHeight: 1 }}
+          >
+            +
+          </div>
+        )}
       </div>
     </div>
   );
-}
+});

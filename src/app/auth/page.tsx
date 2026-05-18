@@ -48,7 +48,7 @@ export default function AuthPage() {
   return (
     <div className="min-h-[100dvh] bg-bg flex flex-col items-center justify-center p-6">
       {/* Brand */}
-      <div className="flex flex-col items-center gap-4 mb-10">
+      <div className="flex flex-col items-center gap-4 mb-8">
         <div className="relative">
           <div className="absolute inset-0 rounded-3xl bg-accent/20 blur-xl scale-125" />
           <div className="relative w-20 h-20 rounded-3xl bg-gradient-to-br from-accent/30 to-accent/10 border border-accent/30 flex items-center justify-center text-4xl shadow-glow-accent">
@@ -56,9 +56,15 @@ export default function AuthPage() {
           </div>
         </div>
         <div className="text-center">
-          <h1 className="text-2xl font-black text-primary tracking-tight">BarFlow</h1>
+          <h1 className="text-2xl font-black text-primary tracking-tight">BarFlow AI</h1>
           <p className="text-tertiary text-sm mt-0.5">by Velocity AI Group</p>
         </div>
+        <a
+          href="/demo"
+          className="text-accent text-xs underline underline-offset-2 opacity-70 hover:opacity-100 transition-opacity"
+        >
+          View product overview →
+        </a>
       </div>
 
       {/* Quick-access staff cards */}

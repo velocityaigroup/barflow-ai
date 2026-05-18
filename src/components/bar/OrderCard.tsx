@@ -1,51 +1,55 @@
 'use client';
-import { OrderData, OrderStatus } from '@/store/useDemoStore';
-import { useDemoStore } from '@/store/useDemoStore';
-import { Clock, ChevronRight } from 'lucide-react';
+import { OrderData, OrderStatus, useDemoStore } from '@/store/useDemoStore';
+import { Clock, AlertTriangle } from 'lucide-react';
 
+// ── Status → design-system class maps ────────────────────────
 const CARD_CLASS: Record<OrderStatus, string> = {
-  new:       'order-card-new',
+  new:         'order-card-new',
   in_progress: 'order-card-progress',
-  ready:     'order-card-ready',
-  delivered: 'order-card',
+  ready:       'order-card-ready',
+  delivered:   'order-card',
 };
 
 const BADGE_CLASS: Record<OrderStatus, string> = {
-  new:       'badge-new',
+  new:         'badge-new',
   in_progress: 'badge-progress',
-  ready:     'badge-ready',
-  delivered: 'badge-delivered',
+  ready:       'badge-ready',
+  delivered:   'badge-delivered',
 };
 
 const BADGE_LABEL: Record<OrderStatus, string> = {
   new:         'NEW',
-  in_progress: 'COOKING',
+  in_progress: 'MAKING',
   ready:       'READY',
   delivered:   'DONE',
 };
 
 const NEXT_STATUS: Partial<Record<OrderStatus, OrderStatus>> = {
-  new:       'in_progress',
+  new:         'in_progress',
   in_progress: 'ready',
-  ready:     'delivered',
+  ready:       'delivered',
 };
 
 const ACTION_LABEL: Partial<Record<OrderStatus, string>> = {
-  new:       '▶ Start',
-  in_progress: '✓ Ready',
-  ready:     '🚀 Served',
+  new:         '▶  Start Making',
+  in_progress: '✓  Mark Ready',
+  ready:       '🚀  Served',
 };
 
+// Action button styling per status
 const ACTION_CLASS: Partial<Record<OrderStatus, string>> = {
-  new:         'btn-primary',
-  in_progress: 'btn w-full bg-warning/20 border border-warning/40 text-warning font-bold hover:bg-warning/30',
-  ready:       'btn-success w-full',
+  new:
+    'btn-primary w-full font-black',
+  in_progress:
+    'btn w-full bg-warning/15 border border-warning/40 text-warning font-black hover:bg-warning/25',
+  ready:
+    'btn-success w-full font-black',
 };
 
 export function OrderCard({ order }: { order: OrderData }) {
   const { updateOrderStatus } = useDemoStore();
 
-  const elapsed = Math.floor((Date.now() - new Date(order.createdAt).getTime()) / 60000);
+  const elapsed  = Math.floor((Date.now() - new Date(order.createdAt).getTime()) / 60000);
   const isUrgent = elapsed >= 15 && order.status !== 'ready' && order.status !== 'delivered';
 
   const handleAction = () => {
@@ -54,41 +58,71 @@ export function OrderCard({ order }: { order: OrderData }) {
   };
 
   return (
-    <div className={`${CARD_CLASS[order.status]} animate-scale-in`}>
-      {/* Header */}
-      <div className="flex items-center justify-between mb-2">
+    <div className={`${CARD_CLASS[order.status]} animate-scale-in flex flex-col gap-3`}>
+
+      {/* ── Header ───────────────────────────────────────── */}
+      <div className="flex items-center justify-between gap-2">
+
+        {/* Table badge + staff */}
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-bg flex items-center justify-center font-black text-lg text-primary">
+          <div
+            className="w-10 h-10 rounded-xl bg-bg border border-border
+                       flex items-center justify-center font-black text-lg text-primary
+                       shrink-0 tabular-nums"
+          >
             {order.tableNumber}
           </div>
-          <div>
-            <p className="text-xs text-secondary font-medium">Table {order.tableNumber}</p>
+          <div className="min-w-0">
+            <p className="text-primary font-bold text-sm leading-none">
+              Table {order.tableNumber}
+            </p>
             {order.staffName && (
-              <p className="text-xs text-tertiary">{order.staffName}</p>
+              <p className="text-tertiary text-xs mt-0.5 leading-none">{order.staffName}</p>
             )}
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className={`badge ${BADGE_CLASS[order.status]}`}>
-            {BADGE_LABEL[order.status]}
-          </div>
+
+        {/* Status badge */}
+        <div className={`badge ${BADGE_CLASS[order.status]} shrink-0`}>
+          {BADGE_LABEL[order.status]}
         </div>
       </div>
 
-      {/* Timer */}
-      <div className={`flex items-center gap-1.5 mb-2 text-xs font-mono ${
-        isUrgent ? 'text-danger font-bold' : 'text-tertiary'
-      }`}>
-        <Clock size={11} />
-        <span>{elapsed === 0 ? 'Just now' : `${elapsed}m ago`}</span>
-        {isUrgent && <span className="text-danger font-bold">⚠️ Overdue</span>}
+      {/* ── Timer ────────────────────────────────────────── */}
+      <div
+        className={`flex items-center gap-1.5 text-xs font-mono
+          ${isUrgent ? 'text-danger font-bold' : 'text-tertiary'}`}
+      >
+        {isUrgent
+          ? <AlertTriangle size={11} className="text-danger shrink-0" />
+          : <Clock size={11} className="shrink-0" />
+        }
+        <span>{elapsed === 0 ? 'Just now' : `${elapsed}m`}</span>
+        {isUrgent && (
+          <span className="text-danger font-bold ml-1 uppercase tracking-wide"
+                style={{ fontSize: '10px' }}>
+            Overdue
+          </span>
+        )}
+        {/* Offline indicator */}
+        {order.isOffline && (
+          <span className="ml-auto text-warning font-bold"
+                style={{ fontSize: '10px' }}>
+            📡 offline
+          </span>
+        )}
       </div>
 
-      {/* Items */}
-      <div className="space-y-1.5 mb-3 min-h-[32px]">
+      {/* ── Items ────────────────────────────────────────── */}
+      <div className="divider" />
+      <div className="space-y-2 flex-1">
         {order.items.map((item, i) => (
-          <div key={i} className="flex items-start gap-2">
-            <span className="text-xl font-black text-accent leading-tight w-6 text-center shrink-0">
+          <div key={i} className="flex items-start gap-2.5">
+            <span
+              className="text-accent font-black leading-tight shrink-0 tabular-nums
+                         w-6 text-center"
+              style={{ fontSize: '18px' }}
+            >
               {item.qty}
             </span>
             <div className="flex-1 min-w-0">
@@ -106,17 +140,18 @@ export function OrderCard({ order }: { order: OrderData }) {
         ))}
       </div>
 
-      {/* Total */}
-      <div className="flex items-center justify-between mb-2 pt-1.5 border-t border-border">
+      {/* ── Total + action ────────────────────────────────── */}
+      <div className="divider" />
+      <div className="flex items-center justify-between">
         <span className="text-tertiary text-xs">Total</span>
-        <span className="text-primary font-bold text-sm tabular-nums">
-          €{order.total.toFixed(2)}
-        </span>
+        <span className="text-primary font-bold tabular-nums">€{order.total.toFixed(2)}</span>
       </div>
 
-      {/* Action button */}
       {NEXT_STATUS[order.status] && (
-        <button onClick={handleAction} className={`${ACTION_CLASS[order.status]} w-full`}>
+        <button
+          onClick={handleAction}
+          className={`${ACTION_CLASS[order.status]} min-h-[44px]`}
+        >
           {ACTION_LABEL[order.status]}
         </button>
       )}
